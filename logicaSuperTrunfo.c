@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <math.h>
 
-//Estrutura de dados que representa uma carta
+/*	Estrutura de dados que representa uma carta.
+*	Escolhi uma struct para encapsular todos os dados que representam uma carta.
+*	Apesar de não ter sido solicitado como requisito, resolvi incluir pois tenho 
+*	familiaridade com esse conceito e acho válido para agrupar dados com um mesmo propósito.
+*/
 struct card {
  	char state;
 	char id[4];
@@ -20,6 +24,7 @@ int main () {
 	printf("Boas vindas ao Super trunfo C.");
 	printf("\nCadastre 2 cartas");	
 
+	//Declaração das duas structs, representando as duas cartas.
 	struct card card1, card2;
 	printf("\nDados da carta 1\n");
 
@@ -73,13 +78,14 @@ int main () {
 	card2.populationDensity = card2.population / card2.area;
 	card2.gdpPerCapita = card2.pib * pow(10,9) / card2.population;
 
-	//comparações feitas usando operador ternário para facilitar a legibilidade.
+	//Bloco de comparação com IF e ELSE simples.
 	printf("---------------------------------------------------------------");
 	printf("\nComparação de Áreas\n");
     printf("Área de %s = %.2f km²", card1.city, card1.area);
     printf("\nÁrea de %s = %.2f km²", card2.city, card2.area);
+	
     if (card1.area > card2.area) printf("\nA carta 1 (%s) venceu!", card1.city);
-    else printf("\nA carta 2 (%s) venceu!", card2.city);
+    else printf("\nA carta 2 (%s) venceu!\n", card2.city);
 
 
 	return 0;
