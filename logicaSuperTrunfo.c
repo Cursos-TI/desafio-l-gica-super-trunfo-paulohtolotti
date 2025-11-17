@@ -9,7 +9,7 @@
 struct card {
  	char state;
 	char id[4];
-	char city[50];
+	char country[50];
 	unsigned long int population;
 	float area;
 	float pib;
@@ -18,6 +18,111 @@ struct card {
 	float gdpPerCapita; //Pib per capita
 	float superPower;
 };
+
+int optionHandler() {
+	/*
+	*	Função responsável por controlar a lógica da entrada de dados.
+	*	Usa um laço do while que obriga o usuário a selecionar um atributo válido.
+	*/
+	int option;
+
+	printf("\n|------------------------------|\n");
+	printf("Selecione o atributo de comparação: ");
+	do {
+
+		printf("\n1. População \n2. Área \n3. PIB \n4. Pontos turísticos \n5. Densidade demográfica\n");
+		scanf("%d", &option);
+
+		if(option < 2 || option > 6) printf("Opção inválida. Tente novamente\n");
+
+	} while(option < 2 || option > 6);
+
+	return option;
+}
+
+void comparassionHandler(int option, struct card cardA, struct card cardB) {
+
+	printf("\n|------------------------------|\n");
+	printf("RESULTADO FINAL\n");
+	printf("%s vs %s", cardA.country, cardB.country);
+	printf("\nAtributo escolhido: ");
+
+	switch(option) {
+		case 1:
+			printf("população");
+			printf("\nPopulação de %s = %d habitantes-- População de %s = %d habitantes", cardA.country, cardA.population, cardB.country, cardB.population);
+
+			if(cardA.population > cardB.population) {
+				printf("\n%s venceu!\n", cardA.country);
+
+			} else if (cardB.population > cardA.population) {
+				printf("\n%s venceu!\n", cardB.country);
+
+			} else {
+				printf("\nEmpate!\n");
+			}
+			break;
+		case 2:
+			printf("área");
+			printf("\nÁrea de %s = %.2fkm² -- Área de %s = %.2fkm²",cardA.country, cardA.area, cardB.country, cardB.area);
+			
+			if(cardA.area > cardB.area) {
+				printf("\n%s venceu!\n", cardA.country);
+
+			} else if (cardB.area > cardA.area) {
+				printf("\n%s venceu!\n", cardB.country);
+
+			} else {
+				printf("\nEmpate!\n");
+			}
+			break;
+		case 3:
+			printf("PIB");
+			printf("\nPIB de %s = %.2f bilhões -- PIB de %s = %.2f bilhões",cardA.country, cardA.pib, cardB.country, cardB.pib);
+			
+			if(cardA.pib > cardB.pib) {
+				printf("\n%s venceu!\n", cardA.country);
+
+			} else if (cardB.pib > cardA.pib) {
+				printf("\n%s venceu!\n", cardB.country);
+
+			} else {
+				printf("\nEmpate!\n");
+			}
+			break;
+		case 4:
+			printf("pontos turísticos");
+			printf("\nPontos turísticos de %s = %d -- Pontos turísticos de %s = %d",cardA.country, cardA.touristAttractions, cardB.country, cardB.touristAttractions);
+			
+			if(cardA.touristAttractions > cardB.touristAttractions) {
+				printf("\n%s venceu!\n", cardA.country);
+
+			} else if (cardB.touristAttractions > cardA.touristAttractions) {
+				printf("\n%s venceu!\n", cardB.country);
+
+			} else {
+				printf("\nEmpate!\n");
+			}
+			break;
+		case 5:
+			printf("densidade populacional");
+			printf("\nDensidade populacional de %s = %.2f hab/km² -- Densidade populacional de %s = %.2f hab/km²",cardA.country, cardA.populationDensity, cardB.country, cardB.populationDensity);
+			
+			if(cardA.populationDensity < cardB.populationDensity) {
+				printf("\n%s venceu!\n", cardA.country);
+
+			} else if (cardB.populationDensity < cardA.populationDensity) {
+				printf("\n%s venceu!\n", cardB.country);
+
+			} else {
+				printf("\nEmpate!\n");
+			}
+			break;
+		default:
+			printf("\n Opção inválida.");
+
+	}
+}
 
 int main () {
 
@@ -28,14 +133,8 @@ int main () {
 	struct card card1, card2;
 	printf("\nDados da carta 1\n");
 
-    printf("Estado: ");
-    scanf(" %c", &card1.state); 
-
-    printf("Código (Estado + numero da carta. Ex: A01): ");
-    scanf("%s", card1.id); 
-
-    printf("Nome da cidade: ");
-    scanf(" %49[^\n]", card1.city); //scanf retirando a quebra delinha
+    printf("Nome do país: ");
+    scanf(" %49[^\n]", card1.country); //scanf retirando a quebra delinha
 
 	printf("Número de habitantes: ");
 	scanf("%d", &card1.population);
@@ -53,15 +152,10 @@ int main () {
 	card1.populationDensity = card1.population / card1.area;
 	card1.gdpPerCapita = card1.pib * pow(10,9) / card1.population;
 
-	printf("\nInsira os dados da carta 2\n");
-    printf("Estado: ");
-    scanf(" %c", &card2.state); 
+	printf("\nInsira os dados da carta 2\n"); 
 
-    printf("Código (Estado + numero da carta. Ex: A01): ");
-    scanf("%s", card2.id); 
-
-    printf("Nome da cidade: ");
-    scanf(" %49[^\n]", card2.city); //scanf retirando a quebra delinha
+    printf("Nome do país: ");
+    scanf(" %49[^\n]", card2.country); //scanf retirando a quebra delinha
 
 	printf("Número de habitantes: ");
 	scanf("%d", &card2.population);
@@ -78,15 +172,12 @@ int main () {
 	card2.populationDensity = card2.population / card2.area;
 	card2.gdpPerCapita = card2.pib * pow(10,9) / card2.population;
 
-	//Bloco de comparação com IF e ELSE simples.
-	printf("---------------------------------------------------------------");
-	printf("\nComparação de Áreas\n");
-    printf("Área de %s = %.2f km²", card1.city, card1.area);
-    printf("\nÁrea de %s = %.2f km²", card2.city, card2.area);
-	
-    if (card1.area > card2.area) printf("\nA carta 1 (%s) venceu!", card1.city);
-    else printf("\nA carta 2 (%s) venceu!\n", card2.city);
+	//Bloco de comparação
+	int option = optionHandler();
+	comparassionHandler(option, card1, card2);
 
 
 	return 0;
 }
+
+ 
