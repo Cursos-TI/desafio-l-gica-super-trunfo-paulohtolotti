@@ -33,9 +33,9 @@ int optionHandler() {
 		printf("\n1. População \n2. Área \n3. PIB \n4. Pontos turísticos \n5. Densidade demográfica\n");
 		scanf("%d", &option);
 
-		if(option < 2 || option > 6) printf("Opção inválida. Tente novamente\n");
+		if(option < 1 || option > 5) printf("Opção inválida. Tente novamente\n");
 
-	} while(option < 2 || option > 6);
+	} while(option < 1 || option > 5);
 
 	return option;
 }
