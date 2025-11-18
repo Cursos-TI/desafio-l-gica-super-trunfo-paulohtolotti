@@ -19,18 +19,29 @@ struct card {
 	float superPower;
 };
 
-int optionHandler() {
+int optionHandler(int hideOption) {
 	/*
 	*	Função responsável por controlar a lógica da entrada de dados.
 	*	Usa um laço do while que obriga o usuário a selecionar um atributo válido.
+	*	hidOption é um inteiro representando a opção de atributo a ser escondida. Se for -1, não esconde nada,
+	*	caso diferente, esconde-se um atributo.
 	*/
 	int option;
 
 	printf("\n|------------------------------|\n");
 	printf("Selecione o atributo de comparação: ");
+
+	//Array de strings com as possíveis opções. Usado para esconder a opção já selecionada pelo usuário.
+	char opts[5][30] = {"População", "Área", "Pib", "Pontos turísticos", "Densidade demográfica"};
+
 	do {
 
-		printf("\n1. População \n2. Área \n3. PIB \n4. Pontos turísticos \n5. Densidade demográfica\n");
+		//For loop que exibe as opções e impede que o usuário selecione opções iguais.
+		for (int i=0; i<5; i++) {
+			if (i+1 == hideOption) continue;
+			else printf("\n%d. %s", (i+1), opts[i]);
+		}
+		printf("\n");
 		scanf("%d", &option);
 
 		if(option < 1 || option > 5) printf("Opção inválida. Tente novamente\n");
@@ -40,10 +51,14 @@ int optionHandler() {
 	return option;
 }
 
-void comparassionHandler(int option, struct card cardA, struct card cardB) {
-
+int comparassionHandler(int option, struct card cardA, struct card cardB) {
+	/*
+	*	FUNÇÃO QUE REALIZA A COMPARASSÃO.
+	*	@PARAM(OPTION: Int): OPÇÃO A SER COMPARADA, DE 1 A 5.
+	*	@PARAM(cardA/cardB: CARD): STRUCT DE CARD COM OS PARÂMETROS;
+	*/
 	printf("\n|------------------------------|\n");
-	printf("RESULTADO FINAL\n");
+	printf("RESULTADO DA RODADA\n");
 	printf("%s vs %s", cardA.country, cardB.country);
 	printf("\nAtributo escolhido: ");
 
@@ -173,10 +188,85 @@ int main () {
 	card2.gdpPerCapita = card2.pib * pow(10,9) / card2.population;
 
 	//Bloco de comparação
-	int option = optionHandler();
-	comparassionHandler(option, card1, card2);
+
+	printf("\nAtributo 1:\n");
+	int option1 = optionHandler(-1);
+	comparassionHandler(option1, card1, card2);
+
+	printf("Atributo 2: ");
+	int option2;
+	//Impede a seleção de dois atributros iguais
+	do {
+		option2 = optionHandler(option1);
+		if (option1 == option2) printf("Não é permitido selecionar o mesmo atributo 2 vezes. Tente novamente.");
+	} while (option2 == option1);
+	
+	
+	comparassionHandler(option2, card1, card2);
+
+	//Soma dos atributos para determinar o vencedor da rodada
+	float maxCard1, maxCard2 = 0;
+
+	switch (option1)
+	{
+	case 1:
+		maxCard1 += card1.population;
+		maxCard2 += card2.population;
+		break;
+	case 2: 
+		maxCard1 += card1.area;
+		maxCard2 += card2.area;
+		break;
+	case 3:
+		maxCard1 += card1.pib;
+		maxCard2 += card2.pib;
+		break;
+	case 4:
+		maxCard1 += card1.touristAttractions;
+		maxCard2 += card2.touristAttractions;
+		break;
+	case 5:
+		maxCard1 += card1.populationDensity;
+		maxCard2 += card2.populationDensity;
+		break;
+	default:
+		break;
+	}
 
 
+	switch (option2)
+	{
+	case 1:
+		maxCard1 += card1.population;
+		maxCard2 += card2.population;
+		break;
+	case 2: 
+		maxCard1 += card1.area;
+		maxCard2 += card2.area;
+		break;
+	case 3:
+		maxCard1 += card1.pib;
+		maxCard2 += card2.pib;
+		break;
+	case 4:
+		maxCard1 += card1.touristAttractions;
+		maxCard2 += card2.touristAttractions;
+		break;
+	case 5:
+		maxCard1 += card1.populationDensity;
+		maxCard2 += card2.populationDensity;
+		break;
+	default:
+		break;
+	}
+
+	printf("\nRESULTADO DA PARTIDA\n");
+	printf("\nSoma total da carta %s: %.2f - Soma total da carta %s: %.2f\n",card1.country, maxCard1, card2.country, maxCard2);
+	if(maxCard1 == maxCard2) printf("\nA partida terminou em empate\n");
+	else {
+		printf("\nO vencedor foi %s\n",maxCard1 > maxCard2 ? card1.country : card2.country);
+	}
+	
 	return 0;
 }
 
